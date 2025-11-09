@@ -177,6 +177,19 @@ class Game:
                 print(f"You attack the enemy for {damage} damage!")
             elif choice == "Defend":
                 print("You brace yourself for the enemy's attack!")
+                enemy_damage = enemy.dmg * round(min(max(0.75,random.random()+0.25),1.25),0) * difficult_key[self.difficulty] * random.ranint(15,20)/100
+                heal = self.max_hp * random.randint(5,15)/100
+                self.hp += heal - enemy_damage
+                print(f"You take {enemy_damage} while defending")
+                print(f"While you heal {heal}")
+                print(f"Your health: {self.hp}")
+                if self.hp <= 0:
+                    print("You got defeated!")
+                    print("You Lose all your gold to the bandit")
+                    self.gold = 0
+                    time.sleep(3)
+                    if self.last_checkpoint:
+                        self.last_checkpoint()
 
             elif choice == "Use Item":
                 print("You rummage through your inventory for an item to use.")
@@ -212,7 +225,8 @@ class Game:
                 print("You Lose all your gold to the bandit")
                 self.gold = 0
                 time.sleep(3)
-                self.last_checkpoint()
+                if self.last_checkpoint:
+                    self.last_checkpoint()
 
         print("You have defeated the enemy!")
         print(f"you gained {enemy.loot} gold from the enemy")
